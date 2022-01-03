@@ -10,13 +10,11 @@ import java.util.Objects;
 
 public class Day1 {
 
-    public int part1() throws URISyntaxException, IOException {
-        Path path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("day1.txt")).toURI());
-        final List<String> lines = Files.readAllLines(path);
+    public int part1(List<String> lines) {
         int cnt = 0;
         for (int i = 0; i < lines.size() - 1; i++) {
-            final int curDepth = Integer.parseInt(lines.get(i));
-            final int nextDepth = Integer.parseInt(lines.get(i + 1));
+            int curDepth = Integer.parseInt(lines.get(i));
+            int nextDepth = Integer.parseInt(lines.get(i + 1));
             if (nextDepth > curDepth) {
                 cnt++;
             }
@@ -24,9 +22,7 @@ public class Day1 {
         return cnt;
     }
 
-    public int part2() throws URISyntaxException, IOException {
-        Path path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("day1.txt")).toURI());
-        final List<String> lines = Files.readAllLines(path);
+    public int part2(List<String> lines) {
         int cnt = 0;
         for (int i = 0; i < lines.size() - 3; i++) {
             int curDepth = Integer.parseInt(lines.get(i));
@@ -44,9 +40,13 @@ public class Day1 {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         Day1 day1 = new Day1();
-        int resultPart1 = day1.part1();
+
+        Path path = Paths.get(Objects.requireNonNull(Day1.class.getClassLoader().getResource("day1.txt")).toURI());
+        List<String> lines = Files.readAllLines(path);
+
+        int resultPart1 = day1.part1(lines);
         System.out.println(resultPart1);
-        int resultPart2 = day1.part2();
+        int resultPart2 = day1.part2(lines);
         System.out.println(resultPart2);
     }
 }

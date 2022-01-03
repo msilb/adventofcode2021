@@ -10,9 +10,7 @@ import java.util.Objects;
 
 public class Day2 {
 
-    public long part1() throws URISyntaxException, IOException {
-        Path path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("day2.txt")).toURI());
-        List<String> lines = Files.readAllLines(path);
+    public long part1(List<String> lines) {
         long horizontalPos = 0;
         long depth = 0;
         for (String line : lines) {
@@ -32,9 +30,7 @@ public class Day2 {
         return horizontalPos * depth;
     }
 
-    public long part2() throws URISyntaxException, IOException {
-        Path path = Paths.get(Objects.requireNonNull(getClass().getClassLoader().getResource("day2.txt")).toURI());
-        List<String> lines = Files.readAllLines(path);
+    public long part2(List<String> lines) {
         long horizontalPos = 0;
         long depth = 0;
         long aim = 0;
@@ -58,9 +54,13 @@ public class Day2 {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         Day2 day2 = new Day2();
-        long resultPart1 = day2.part1();
+
+        Path path = Paths.get(Objects.requireNonNull(Day2.class.getClassLoader().getResource("day2.txt")).toURI());
+        List<String> lines = Files.readAllLines(path);
+
+        long resultPart1 = day2.part1(lines);
         System.out.println(resultPart1);
-        long resultPart2 = day2.part2();
+        long resultPart2 = day2.part2(lines);
         System.out.println(resultPart2);
     }
 }
