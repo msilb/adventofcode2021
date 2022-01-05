@@ -12,30 +12,22 @@ public class Day4 {
     record Board(int[][] fields) {
     }
 
-    public int part1(Board[] boards, int[] numbersDrawn) {
+    public int part1(Board[] boards, int[] allDrawnNumbers) {
         boolean[][][] marked = new boolean[boards.length][5][5];
         int cnt = 0;
-        while (cnt < numbersDrawn.length) {
-            int n = numbersDrawn[cnt++];
+        while (cnt < allDrawnNumbers.length) {
+            int drawnNumber = allDrawnNumbers[cnt++];
             for (int i = 0; i < boards.length; i++) {
                 Board board = boards[i];
-                for (int j = 0; j < 5; j++) {
-                    for (int k = 0; k < 5; k++) {
-                        if (board.fields[j][k] == n) {
-                            marked[i][j][k] = true;
-                        }
-                    }
-                }
+                markBoard(board, drawnNumber, marked[i]);
                 for (int j = 0; j < 5; j++) {
                     if (marked[i][j][0] && marked[i][j][1] && marked[i][j][2] && marked[i][j][3] && marked[i][j][4]) {
-                        int sum = getSum(board, marked[i]);
-                        return sum * n;
+                        return calculateFinalResult(board, marked[i], drawnNumber);
                     }
                 }
                 for (int j = 0; j < 5; j++) {
                     if (marked[i][0][j] && marked[i][1][j] && marked[i][2][j] && marked[i][3][j] && marked[i][4][j]) {
-                        int sum = getSum(board, marked[i]);
-                        return sum * n;
+                        return calculateFinalResult(board, marked[i], drawnNumber);
                     }
                 }
             }
@@ -43,30 +35,23 @@ public class Day4 {
         return -1;
     }
 
-    public int part2(Board[] boards, int[] numbersDrawn) {
+    public int part2(Board[] boards, int[] allDrawnNumbers) {
         boolean[][][] marked = new boolean[boards.length][5][5];
         int cnt = 0;
         Set<Board> alreadyWonBoards = new HashSet<>();
-        while (cnt < numbersDrawn.length) {
-            int n = numbersDrawn[cnt++];
+        while (cnt < allDrawnNumbers.length) {
+            int drawnNumber = allDrawnNumbers[cnt++];
             for (int i = 0; i < boards.length; i++) {
                 Board board = boards[i];
                 if (alreadyWonBoards.contains(board)) {
                     continue;
                 }
-                for (int j = 0; j < 5; j++) {
-                    for (int k = 0; k < 5; k++) {
-                        if (board.fields[j][k] == n) {
-                            marked[i][j][k] = true;
-                        }
-                    }
-                }
+                markBoard(board, drawnNumber, marked[i]);
                 for (int j = 0; j < 5; j++) {
                     if (marked[i][j][0] && marked[i][j][1] && marked[i][j][2] && marked[i][j][3] && marked[i][j][4]) {
                         alreadyWonBoards.add(board);
                         if (alreadyWonBoards.size() == boards.length) {
-                            int sum = getSum(boards[i], marked[i]);
-                            return sum * n;
+                            return calculateFinalResult(board, marked[i], drawnNumber);
                         }
                     }
                 }
@@ -74,14 +59,23 @@ public class Day4 {
                     if (marked[i][0][j] && marked[i][1][j] && marked[i][2][j] && marked[i][3][j] && marked[i][4][j]) {
                         alreadyWonBoards.add(board);
                         if (alreadyWonBoards.size() == boards.length) {
-                            int sum = getSum(boards[i], marked[i]);
-                            return sum * n;
+                            return calculateFinalResult(board, marked[i], drawnNumber);
                         }
                     }
                 }
             }
         }
         return -1;
+    }
+
+    private void markBoard(Board board, int drawnNumber, boolean[][] marked) {
+        for (int j = 0; j < 5; j++) {
+            for (int k = 0; k < 5; k++) {
+                if (board.fields[j][k] == drawnNumber) {
+                    marked[j][k] = true;
+                }
+            }
+        }
     }
 
     private int getSum(Board board, boolean[][] marked) {
@@ -94,6 +88,11 @@ public class Day4 {
             }
         }
         return sum;
+    }
+
+    private int calculateFinalResult(Board board, boolean[][] marked, int drawnNumber) {
+        int sum = getSum(board, marked);
+        return sum * drawnNumber;
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
