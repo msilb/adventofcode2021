@@ -93,7 +93,20 @@ public class Day4 {
         Path path = Paths.get(Objects.requireNonNull(Day4.class.getClassLoader().getResource("day4.txt")).toURI());
         List<String> lines = Files.readAllLines(path);
 
-        int[] numbersDrawn = Arrays.stream(lines.get(0).split(",")).mapToInt(Integer::parseInt).toArray();
+        int[] numbersDrawn = parseDrawnNumbers(lines);
+        List<Board> boards = parseBoards(lines);
+
+        int resultPart1 = day4.part1(boards.toArray(new Board[0]), numbersDrawn);
+        System.out.println(resultPart1);
+        int resultPart2 = day4.part2(boards.toArray(new Board[0]), numbersDrawn);
+        System.out.println(resultPart2);
+    }
+
+    private static int[] parseDrawnNumbers(List<String> lines) {
+        return Arrays.stream(lines.get(0).split(",")).mapToInt(Integer::parseInt).toArray();
+    }
+
+    private static List<Board> parseBoards(List<String> lines) {
         ListIterator<String> it = lines.listIterator(1);
         List<Board> boards = new ArrayList<>();
         while (it.hasNext()) {
@@ -101,11 +114,7 @@ public class Day4 {
             Board b = parseBoard(it);
             boards.add(b);
         }
-
-        int resultPart1 = day4.part1(boards.toArray(new Board[0]), numbersDrawn);
-        System.out.println(resultPart1);
-        int resultPart2 = day4.part2(boards.toArray(new Board[0]), numbersDrawn);
-        System.out.println(resultPart2);
+        return boards;
     }
 
     private static Board parseBoard(ListIterator<String> it) {
