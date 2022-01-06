@@ -66,16 +66,14 @@ public class Day3 {
             }
             final int index = i;
             if (ones >= zeros) {
-                if (ratingType == RatingType.OXYGEN_GENERATOR) {
-                    candidates.removeIf(line -> line.charAt(index) != '1');
-                } else {
-                    candidates.removeIf(line -> line.charAt(index) != '0');
+                switch (ratingType) {
+                    case OXYGEN_GENERATOR -> candidates.removeIf(line -> line.charAt(index) != '1');
+                    case CO2_SCRUBBER -> candidates.removeIf(line -> line.charAt(index) != '0');
                 }
             } else {
-                if (ratingType == RatingType.OXYGEN_GENERATOR) {
-                    candidates.removeIf(line -> line.charAt(index) != '0');
-                } else {
-                    candidates.removeIf(line -> line.charAt(index) != '1');
+                switch (ratingType) {
+                    case OXYGEN_GENERATOR -> candidates.removeIf(line -> line.charAt(index) != '0');
+                    case CO2_SCRUBBER -> candidates.removeIf(line -> line.charAt(index) != '1');
                 }
             }
             i++;
