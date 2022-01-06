@@ -52,7 +52,7 @@ public class Day5 {
                 processVerticalLine(vl, field);
             }
             if (l instanceof DiagonalLine dl) {
-                processDiagonalLine(field, dl);
+                processDiagonalLine(dl, field);
             }
         }
         return countDangerousAreas(field);
@@ -60,35 +60,35 @@ public class Day5 {
 
     private void processHorizontalLine(HorizontalLine hl, int[][] field) {
         for (int i = min(hl.a.y, hl.b.y); i <= max(hl.a.y, hl.b.y); i++) {
-            field[hl.a.x][i] += 1;
+            field[hl.a.x][i]++;
         }
     }
 
     private void processVerticalLine(VerticalLine vl, int[][] field) {
         for (int i = min(vl.a.x, vl.b.x); i <= max(vl.a.x, vl.b.x); i++) {
-            field[i][vl.a.y] += 1;
+            field[i][vl.a.y]++;
         }
     }
 
-    private void processDiagonalLine(int[][] field, DiagonalLine dl) {
+    private void processDiagonalLine(DiagonalLine dl, int[][] field) {
         if (dl.a.x < dl.b.x && dl.a.y < dl.b.y) {
             for (int i = dl.a.x; i <= dl.b.x; i++) {
-                field[i][dl.a.y + i - dl.a.x] += 1;
+                field[i][dl.a.y + i - dl.a.x]++;
             }
         }
         if (dl.a.x < dl.b.x && dl.a.y > dl.b.y) {
             for (int i = dl.a.x; i <= dl.b.x; i++) {
-                field[i][dl.a.y - i + dl.a.x] += 1;
+                field[i][dl.a.y - i + dl.a.x]++;
             }
         }
         if (dl.a.x > dl.b.x && dl.a.y < dl.b.y) {
             for (int i = dl.b.x; i <= dl.a.x; i++) {
-                field[i][dl.b.y - i + dl.b.x] += 1;
+                field[i][dl.b.y - i + dl.b.x]++;
             }
         }
         if (dl.a.x > dl.b.x && dl.a.y > dl.b.y) {
             for (int i = dl.b.x; i <= dl.a.x; i++) {
-                field[i][dl.b.y + i - dl.b.x] += 1;
+                field[i][dl.b.y + i - dl.b.x]++;
             }
         }
     }
