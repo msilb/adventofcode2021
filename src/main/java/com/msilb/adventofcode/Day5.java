@@ -34,9 +34,10 @@ public class Day5 {
         for (Line l : lines) {
             if (l instanceof HorizontalLine hl) {
                 processHorizontalLine(hl, field);
-            }
-            if (l instanceof VerticalLine vl) {
+            } else if (l instanceof VerticalLine vl) {
                 processVerticalLine(vl, field);
+            } else {
+                throw new RuntimeException("Line must be either horizontal or vertical!");
             }
         }
         return countDangerousAreas(field);
@@ -47,12 +48,12 @@ public class Day5 {
         for (Line l : lines) {
             if (l instanceof HorizontalLine hl) {
                 processHorizontalLine(hl, field);
-            }
-            if (l instanceof VerticalLine vl) {
+            } else if (l instanceof VerticalLine vl) {
                 processVerticalLine(vl, field);
-            }
-            if (l instanceof DiagonalLine dl) {
+            } else if (l instanceof DiagonalLine dl) {
                 processDiagonalLine(dl, field);
+            } else {
+                throw new RuntimeException("Line must be horizontal, vertical or diagonal!");
             }
         }
         return countDangerousAreas(field);
@@ -122,14 +123,16 @@ public class Day5 {
     private static List<? extends Line> parseLines(List<String> textLines) {
         return textLines.stream().map(s -> {
             String[] stringPoints = s.split(" -> ");
-            int[] coordinatesPoint1 = Arrays.stream(stringPoints[0].split(",")).mapToInt(Integer::parseInt).toArray();
-            int[] coordinatesPoint2 = Arrays.stream(stringPoints[1].split(",")).mapToInt(Integer::parseInt).toArray();
-            if (coordinatesPoint1[0] == coordinatesPoint2[0]) {
-                return new HorizontalLine(new Point(coordinatesPoint1[0], coordinatesPoint1[1]), new Point(coordinatesPoint2[0], coordinatesPoint2[1]));
-            } else if (coordinatesPoint1[1] == coordinatesPoint2[1]) {
-                return new VerticalLine(new Point(coordinatesPoint1[0], coordinatesPoint1[1]), new Point(coordinatesPoint2[0], coordinatesPoint2[1]));
+            int[] coordinates1 = Arrays.stream(stringPoints[0].split(",")).mapToInt(Integer::parseInt).toArray();
+            int[] coordinates2 = Arrays.stream(stringPoints[1].split(",")).mapToInt(Integer::parseInt).toArray();
+            Point a = new Point(coordinates1[0], coordinates1[1]);
+            Point b = new Point(coordinates2[0], coordinates2[1]);
+            if (a.x == b.x) {
+                return new HorizontalLine(a, b);
+            } else if (a.y == b.y) {
+                return new VerticalLine(a, b);
             } else {
-                return new DiagonalLine(new Point(coordinatesPoint1[0], coordinatesPoint1[1]), new Point(coordinatesPoint2[0], coordinatesPoint2[1]));
+                return new DiagonalLine(a, b);
             }
         }).toList();
     }
