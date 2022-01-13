@@ -6,11 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 
 public class Day6 {
 
@@ -28,13 +24,13 @@ public class Day6 {
     }
 
     public long part2(List<Integer> fishes) {
-        Map<Integer, Long> map = initEmptyMap();
+        Map<Integer, Long> fishCountByTimer = initEmptyMap();
         for (int fish : fishes) {
-            map.put(fish, map.get(fish) + 1);
+            fishCountByTimer.put(fish, fishCountByTimer.get(fish) + 1);
         }
         for (int day = 0; day < 256; day++) {
             Map<Integer, Long> currMap = initEmptyMap();
-            for (Map.Entry<Integer, Long> e : map.entrySet()) {
+            for (Map.Entry<Integer, Long> e : fishCountByTimer.entrySet()) {
                 if (e.getKey() == 0) {
                     currMap.put(6, currMap.get(6) + e.getValue());
                     currMap.put(8, currMap.get(8) + e.getValue());
@@ -42,10 +38,10 @@ public class Day6 {
                     currMap.put(e.getKey() - 1, currMap.get(e.getKey() - 1) + e.getValue());
                 }
             }
-            map = currMap;
+            fishCountByTimer = currMap;
         }
 
-        return map.values().stream().mapToLong(Long::longValue).sum();
+        return fishCountByTimer.values().stream().mapToLong(Long::longValue).sum();
     }
 
     private Map<Integer, Long> initEmptyMap() {
