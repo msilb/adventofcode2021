@@ -5,7 +5,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 public class Day6 {
@@ -24,32 +27,20 @@ public class Day6 {
     }
 
     public long part2(List<Integer> fishes) {
-        Map<Integer, Long> fishCountByTimer = initEmptyMap();
-        for (int fish : fishes) {
-            fishCountByTimer.put(fish, fishCountByTimer.get(fish) + 1);
+        long[] cnt = new long[9];
+        for (int f : fishes) {
+            cnt[f]++;
         }
         for (int day = 0; day < 256; day++) {
-            Map<Integer, Long> currMap = initEmptyMap();
-            for (Map.Entry<Integer, Long> e : fishCountByTimer.entrySet()) {
-                if (e.getKey() == 0) {
-                    currMap.put(6, currMap.get(6) + e.getValue());
-                    currMap.put(8, currMap.get(8) + e.getValue());
-                } else {
-                    currMap.put(e.getKey() - 1, currMap.get(e.getKey() - 1) + e.getValue());
-                }
+            long[] arr = new long[9];
+            for (int i = 0; i < 9; i++) {
+                arr[(i + 8) % 9] += cnt[i];
             }
-            fishCountByTimer = currMap;
+            arr[6] += cnt[0];
+            cnt = arr;
         }
 
-        return fishCountByTimer.values().stream().mapToLong(Long::longValue).sum();
-    }
-
-    private Map<Integer, Long> initEmptyMap() {
-        Map<Integer, Long> map = new HashMap<>();
-        for (int i = 0; i <= 8; i++) {
-            map.put(i, 0L);
-        }
-        return map;
+        return Arrays.stream(cnt).sum();
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
