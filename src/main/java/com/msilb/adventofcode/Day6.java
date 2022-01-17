@@ -27,20 +27,20 @@ public class Day6 {
     }
 
     public long part2(List<Integer> fishes) {
-        long[] cnt = new long[9];
+        long[] fishCounts = new long[9];
         for (int f : fishes) {
-            cnt[f]++;
+            fishCounts[f]++;
         }
         for (int day = 0; day < 256; day++) {
-            long[] arr = new long[9];
+            long[] newFishCounts = new long[9];
             for (int i = 0; i < 9; i++) {
-                arr[(i + 8) % 9] += cnt[i];
+                newFishCounts[(i + 8) % 9] += fishCounts[i];
             }
-            arr[6] += cnt[0];
-            cnt = arr;
+            newFishCounts[6] += fishCounts[0];
+            fishCounts = newFishCounts;
         }
 
-        return Arrays.stream(cnt).sum();
+        return Arrays.stream(fishCounts).sum();
     }
 
     public static void main(String[] args) throws URISyntaxException, IOException {
